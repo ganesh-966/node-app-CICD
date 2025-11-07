@@ -66,6 +66,13 @@ Username: ubuntu
 
 Private Key: Your Private Key
 
+
+![](./img/Screenshot%202025-11-07%20100353.png)
+
+
+
+
+
 ![](./img/Screenshot%202025-11-06%20134925.png)
 
 ✅ Step 4 — Push Code and Jenkinsfile to Repository
@@ -85,6 +92,8 @@ Runs tests
 Builds the application
 
 Deploys it to the target server
+
+![](./img/Screenshot%202025-11-07%20100945.png)
 
 ![](./img/Screenshot%202025-11-06%20134802.png)
 
