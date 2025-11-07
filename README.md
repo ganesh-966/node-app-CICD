@@ -29,7 +29,6 @@ Job 3 – 03-install-dependency: Install project dependencies using npm install.
 Job 4 – 04-deploy-node: Deploy or start the Node.js application using PM2.
 
 
-# job 1 :
 
 ✅ Step 1 — Set Up AWS EC2 Instances
 
