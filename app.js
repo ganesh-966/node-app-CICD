@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
       </style>
     </head>
     <body>
-      <h1>Hello from ganesh!</h1>
+      <h1>Hello world!</h1>
       <p>🎉 Your CI/CD deployment was successful.</p>
       <a class="button" href="#">Get Started</a>
     </body>
