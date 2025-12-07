@@ -2,23 +2,27 @@ pipeline {
     agent any
 
     environment {
-        SERVER_IP      = '18.140.58.32'
-        SSH_CREDENTIAL = 'node-app-key'
+        SERVER_IP      = '18.140.58.32'                // Your EC2 server IP
+        SSH_CREDENTIAL = 'node-app-key'               // Jenkins SSH credential ID
         REPO_URL       = 'https://github.com/ganesh-966/node-app-CICD.git'
         BRANCH         = 'main'
         REMOTE_USER    = 'ubuntu'
         REMOTE_PATH    = '/home/ubuntu/node-app'
+        APP_NAME       = 'node-app'                   // PM2 app name
+        NODE_ENV       = 'production'                // optional
     }
 
     stages {
         stage('Clone Repository') {
             steps {
+                echo "📥 Cloning repository..."
                 git branch: "${BRANCH}", url: "${REPO_URL}"
             }
         }
 
         stage('Upload Files to EC2') {
             steps {
+                echo "🚀 Uploading files to EC2..."
                 sshagent([SSH_CREDENTIAL]) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${SERVER_IP} 'mkdir -p ${REMOTE_PATH}'
@@ -30,13 +34,27 @@ pipeline {
 
         stage('Install Dependencies & Start App') {
             steps {
+                echo "🔧 Installing dependencies and starting app..."
                 sshagent([SSH_CREDENTIAL]) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${SERVER_IP} '
                             cd ${REMOTE_PATH} &&
                             npm install &&
-                            pm2 start app.js --name node-app || pm2 restart node-app
+                            pm2 describe ${APP_NAME} > /dev/null 2>&1 && \
+                                pm2 restart ${APP_NAME} || pm2 start app.js --name ${APP_NAME} &&
+                            pm2 save
                         '
+                    """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                echo "✅ Checking app status on EC2..."
+                sshagent([SSH_CREDENTIAL]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${SERVER_IP} 'pm2 list | grep ${APP_NAME}'
                     """
                 }
             }
@@ -45,10 +63,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Application deployed successfully!'
+            echo '🎉 Application deployed successfully!'
         }
         failure {
-            echo '❌ Deployment failed.'
+            echo '❌ Deployment failed. Check the logs above for details.'
         }
     }
 }
