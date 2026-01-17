@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SERVER_IP      = '18.141.187.170'                // Your EC2 server IP
+        SERVER_IP      = '172.31.19.162'                // Your EC2 server IP
         SSH_CREDENTIAL = 'node-app-key'               // Jenkins SSH credential ID
         REPO_URL       = 'https://github.com/ganesh-966/node-app-CICD.git'
         BRANCH         = 'main'
