@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SERVER_IP      = '172.31.27.24'                // Your EC2 server IP
-        SSH_CREDENTIAL = 'app-key'               // Jenkins SSH credential ID
+        SSH_CREDENTIAL = 'pull node'               // Jenkins SSH credential ID
         REPO_URL       = 'https://github.com/ganesh-966/node-app-CICD.git'
         BRANCH         = 'main'
         REMOTE_USER    = 'ubuntu'
